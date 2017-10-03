@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>The Psychic Game</title>
+
+<script src="https://code.jquery.com/jquery.js"></script>
+
+</head>
+<body>
+	
+	<h1>The Psychic Game</h1>
+
+	<h2 class="text" id="randomTxt">Guess what letter I'm thinking of (pick a letter from a-z) !</h2>
+	
+	<h3 class=" " id="wins"> Wins: </h3 >
+
+	<h3 class=" " id="loss" >Losses: </h3>
+
+	<h3 class=" " id="numGuessLeft" >Guesses left: </h3>
+
+	<h3 class=" " id="guessesSoFar" >Your guesses so far: </h3>
+	
+	<script type="text/javascript">
+		
+		// Global variables declared
+			alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+			var compLtrThought = ""; 
+			var guessSoFar = "";
+			var wins = 0;
+			var losses = 0; 
+			var numGuessLeft = 10;
+			
+			//Creates a reset funtion		
+
+			function reset() {
+				console.log("successful reset");
+				//compLtrThought = "";
+				deepThought();
+				guessSoFar = "";
+				wins = 0;
+				losses = 0;
+				numGuessLeft = 10;
+			}			
+			
+			
+
+			// This creates the computer generated random letter
+
+			 function deepThought () {
+				var x = Math.floor((Math.random() * 26) + 1);
+				compLtrThought = (alphabet[x]);
+				console.log(compLtrThought);
+			}	
+
+			deepThought()
+
+		$(document).ready(function(){
+			
+
+			// This captures user key input
+			
+			document.onkeypress = (function(){
+				//while (numGuessLeft > 0) {
+				var userKeyPress = event.key;
+				
+				// Updates the user guess
+
+				function guessUpdate(){
+					guessSoFar = userKeyPress + guessSoFar;
+					console.log(guessSoFar);
+					document.querySelector("#guessesSoFar").innerHTML = "Your guesses so far: " + guessSoFar;
+				}
+				if (userKeyPress === compLtrThought) {
+					wins++, alert("YOU WIN");
+					console.log(wins);
+					document.querySelector("#wins").innerHTML = "Wins: " + wins;
+					deepThought();
+					reset();
+					console.log("NUM GUESSES LEFT AFTER WIN")
+					console.log(numGuessLeft);
+					document.querySelector("#guessesSoFar").innerHTML = "Guesses left: " + guessSoFar;
+
+				}
+				else {
+					numGuessLeft--;
+					console.log(numGuessLeft);
+					guessUpdate();
+					document.querySelector("#numGuessLeft").innerHTML = "Guesses left: " + numGuessLeft;
+
+				}
+				if (numGuessLeft === 0) {
+					losses++;
+					console.log(losses);
+					document.querySelector("#loss").innerHTML = "Losses: " + losses;
+					alert("YOU LOSS");
+					reset();
+				}
+				
+				
+				
+			})
+			
+		})
+		
+		
+	</script>
+</body>
